@@ -159,6 +159,7 @@ public class CompositeService extends AbstractService {
 		//ToDo: Cache is shared among all the workflow invocations. separate local cache is not supported yet.
 		//SDCache sdCache = configuration.SDCacheShared == true ? cache : new SDCache() ;
 		//WorkflowEngine engine = new WorkflowEngine(this, sdCache);
+    	System.out.println("Invoking composite service....");
 		WorkflowEngine engine = new WorkflowEngine(this);
 		workflowProbe.notifyWorkflowStarted(qosRequirement, params);
 		Object result = engine.executeWorkflow(workflow, qosRequirement, params);
@@ -296,7 +297,7 @@ public class CompositeService extends AbstractService {
 	    // Apply strategy
 	    ServiceDescription service = applyQoSRequirement(qosRequirement, services, opName, params);
 
-	    System.out.println("Operation " + service.getServiceType() + "." + opName + " has been selected with following custom properties:"
+	    System.out.println("Operation " + service.getServiceType() + "." + opName + " has been selected (initially) with following custom properties:"
 		    + service.getCustomProperties());
 
 	    this.getWorkflowProbe().notifyServiceOperationInvoked(service, opName, params);	    

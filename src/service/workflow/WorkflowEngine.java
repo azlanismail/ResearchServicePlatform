@@ -56,7 +56,7 @@ public class WorkflowEngine {
 			TaskGraphInterpreter interpreter = new TaskGraphInterpreter();
 			Object value = interpreter.interpret(startGraph, 
 					qosRequirement, service, params);
-			System.out.println("Result:" + value);
+			System.out.println("Result from workflow engine: " + value);
 			return value;
 		} catch (IOException | RecognitionException e) {
 			e.printStackTrace();
