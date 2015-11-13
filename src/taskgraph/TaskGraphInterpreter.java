@@ -391,6 +391,7 @@ public class TaskGraphInterpreter {
 		if (call.getServiceName().equalsIgnoreCase("this")) {
 		    resultInvoke = compositeService.invokeLocalOperation(call.getOperationName(), params);
 		} else {
+			System.out.println("invoking service operation from Task graph interpretation");
 		    resultInvoke = compositeService.invokeServiceOperation(qosRequirement, call.getServiceName(), call.getOperationName(), params);
 		}
 
