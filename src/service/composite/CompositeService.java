@@ -39,6 +39,12 @@ public class CompositeService extends AbstractService {
     
     // This variable will effect only one thread/invocation of the workflow
     private AtomicBoolean stopRetrying = new AtomicBoolean(false);
+    
+    //set the default status for games-based planning
+    private boolean gamesPlan = false;
+    
+    //to support games-based planning
+    private ServiceDescription newService;
 
     /**
      * Set the workflow 
@@ -159,7 +165,7 @@ public class CompositeService extends AbstractService {
 		//ToDo: Cache is shared among all the workflow invocations. separate local cache is not supported yet.
 		//SDCache sdCache = configuration.SDCacheShared == true ? cache : new SDCache() ;
 		//WorkflowEngine engine = new WorkflowEngine(this, sdCache);
-    	System.out.println("Invoking composite service....");
+    	//System.out.println("Invoking composite service....");
 		WorkflowEngine engine = new WorkflowEngine(this);
 		workflowProbe.notifyWorkflowStarted(qosRequirement, params);
 		Object result = engine.executeWorkflow(workflow, qosRequirement, params);
@@ -202,6 +208,7 @@ public class CompositeService extends AbstractService {
      */
     @SuppressWarnings("unchecked")
 	public List<ServiceDescription> lookupService(String serviceType, String opName) {
+    	//System.out.println("lookup service is called from composite service");
 		List<ServiceDescription> serviceDescriptions = cache.get(serviceType,
 				opName);
 		if (serviceDescriptions == null || serviceDescriptions.size() == 0) {
@@ -264,6 +271,7 @@ public class CompositeService extends AbstractService {
     }
 
     protected ServiceDescription applyQoSRequirement(String qosRequirementName, List<ServiceDescription> descriptions, String opName, Object... params) {
+    	System.out.println("selecting service by applyQoSRequirement");
 	AbstractQoSRequirement qosRequirement = qosRequirements.get(qosRequirementName);
 	if (qosRequirement == null) {
 	    System.err.println("QoS requirement is null. To select among multiple services, a QoS requirement must have been provided.");
@@ -282,21 +290,30 @@ public class CompositeService extends AbstractService {
      * @return the result
      */
     public Object invokeServiceOperation(String qosRequirement, String serviceName, String opName, Object[] params) {
-
+    //System.out.println("invoking service operation from composite service");
 	int timeout = this.getConfiguration().timeout;
 	Object resultVal;
 	int retryAttempts = 0;
 	stopRetrying.set(false);
+	int count = 0;
 	do {
+		//System.out.println("lookup service is called for :"+count++);
 	    List<ServiceDescription> services = lookupService(serviceName, opName);
 	    if (services == null || services.size() == 0) {
 		System.out.println("ServiceName: " + serviceName + "." + opName + "not found!");
 		return new TimeOutError();
 	    }
-
+	    
+	    ServiceDescription service;
 	    // Apply strategy
-	    ServiceDescription service = applyQoSRequirement(qosRequirement, services, opName, params);
-
+	    if (this.gamesPlan == false) {
+	    	service = applyQoSRequirement(qosRequirement, services, opName, params);
+	    }
+	    else {
+	    	service = this.newService;
+	    	this.gamesPlan = false;
+	    }
+	    
 	    System.out.println("Operation " + service.getServiceType() + "." + opName + " has been selected (initially) with following custom properties:"
 		    + service.getCustomProperties());
 
@@ -351,4 +368,13 @@ public class CompositeService extends AbstractService {
     public void stopRetrying(){
 	stopRetrying.set(true);
     }
+    
+    public void setGamesPlan(boolean status){
+    	this.gamesPlan = status;
+    }
+    
+    public void setNewService(ServiceDescription newService) {
+    	this.newService = newService;
+    }
+    
 }

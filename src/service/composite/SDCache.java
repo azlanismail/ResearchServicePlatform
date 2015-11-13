@@ -99,6 +99,7 @@ public class SDCache{
 	 * @return true if added successfully, otherwise false
 	 */
 	public boolean add(String serviceType,String opName,List<ServiceDescription> serviceDescriptions){
+		System.out.println("add into cache from SDCache");
 		if(maxCacheSize<=caches.size() && maxCacheSize>0)
 			return false;
 		List<ServiceDescription> services=new ArrayList<>();
@@ -133,6 +134,7 @@ public class SDCache{
      * @param service the service description
      */
     public void remove(ServiceDescription service) {
+    	//System.out.println("remove service called from SDCache..");
     	for (Operation operation : service.getOperationList())
     		remove(service, operation.getOpName());
     }

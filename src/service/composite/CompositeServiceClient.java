@@ -38,6 +38,7 @@ public class CompositeServiceClient {
      * @return the result 
      */
     public Object invokeCompositeService(String qosRequirement, Object...params){
+    	System.out.println("Invoking composite service from composite service client");
     	return client.sendRequest("invokeCompositeService", qosRequirement, params);
     }
     

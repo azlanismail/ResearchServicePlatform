@@ -91,6 +91,7 @@ public abstract class AtomicService extends AbstractService {
 							
 							// execute "preInvokeOperation" in service profiles one after another
 							// if the current result is false, stop executing the next one
+							System.out.println("Execute preInvokeOperation from AtomicService");
 							boolean flag = true;
 							for (int i = 0; i < serviceProfileNum; i++) {
 								if (!(flag = serviceProfiles.get(i).preInvokeOperation(opName, args)))

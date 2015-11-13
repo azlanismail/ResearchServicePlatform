@@ -64,6 +64,7 @@ public class CacheEffector {
      */
     public void getAllServices(String serviceType, String opName){
     	compositeService.getCache().remove(serviceType, opName);
+    	//System.out.println("Calling lookup service from getAllService from CacheEffector");
     	compositeService.lookupService(serviceType, opName);
     }
 
@@ -75,6 +76,7 @@ public class CacheEffector {
      */
     public List<ServiceDescription> refreshCache(ServiceDescription description, String opName) {
     	removeService(description, opName);
+    	//System.out.println("Calling lookup service from refreshCache in CacheEffector");
     	return compositeService.lookupService(description.getServiceType(), opName);
     }
 
