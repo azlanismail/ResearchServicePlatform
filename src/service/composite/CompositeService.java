@@ -40,6 +40,8 @@ public class CompositeService extends AbstractService {
     // This variable will effect only one thread/invocation of the workflow
     private AtomicBoolean stopRetrying = new AtomicBoolean(false);
     
+    
+    private List<ServiceDescription> serviceDescriptions;
     //set the default status for games-based planning
     private boolean gamesPlan = false;
     
@@ -209,8 +211,8 @@ public class CompositeService extends AbstractService {
     @SuppressWarnings("unchecked")
 	public List<ServiceDescription> lookupService(String serviceType, String opName) {
     	//System.out.println("lookup service is called from composite service");
-		List<ServiceDescription> serviceDescriptions = cache.get(serviceType,
-				opName);
+		//List<ServiceDescription> 
+		serviceDescriptions = cache.get(serviceType,opName);
 		if (serviceDescriptions == null || serviceDescriptions.size() == 0) {
 			serviceDescriptions = (List<ServiceDescription>) this.sendRequest(
 					ServiceRegistry.NAME, ServiceRegistry.ADDRESS, true,
@@ -271,7 +273,7 @@ public class CompositeService extends AbstractService {
     }
 
     protected ServiceDescription applyQoSRequirement(String qosRequirementName, List<ServiceDescription> descriptions, String opName, Object... params) {
-    	System.out.println("selecting service by applyQoSRequirement");
+    	//System.out.println("selecting service by applyQoSRequirement");
 	AbstractQoSRequirement qosRequirement = qosRequirements.get(qosRequirementName);
 	if (qosRequirement == null) {
 	    System.err.println("QoS requirement is null. To select among multiple services, a QoS requirement must have been provided.");
