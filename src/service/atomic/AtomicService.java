@@ -91,7 +91,7 @@ public abstract class AtomicService extends AbstractService {
 							
 							// execute "preInvokeOperation" in service profiles one after another
 							// if the current result is false, stop executing the next one
-							System.out.println("Execute preInvokeOperation from AtomicService");
+							System.out.println("Execute preInvokeOperation in service profiles  from AtomicService");
 							boolean flag = true;
 							for (int i = 0; i < serviceProfileNum; i++) {
 								if (!(flag = serviceProfiles.get(i).preInvokeOperation(opName, args)))
@@ -114,7 +114,7 @@ public abstract class AtomicService extends AbstractService {
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
-					System.out.println("The operation name or params are not valid. Please check and send again!");
+					System.out.println("(from atomic service)The operation name or params are not valid. Please check and send again!");
 				}
 			}
 		}

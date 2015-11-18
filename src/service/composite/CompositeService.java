@@ -41,7 +41,7 @@ public class CompositeService extends AbstractService {
     private AtomicBoolean stopRetrying = new AtomicBoolean(false);
     
     
-    private List<ServiceDescription> serviceDescriptions;
+   // private List<ServiceDescription> serviceDescriptions;
     //set the default status for games-based planning
     private boolean gamesPlan = false;
     
@@ -168,6 +168,7 @@ public class CompositeService extends AbstractService {
 		//SDCache sdCache = configuration.SDCacheShared == true ? cache : new SDCache() ;
 		//WorkflowEngine engine = new WorkflowEngine(this, sdCache);
     	//System.out.println("Invoking composite service....");
+    	this.gamesPlan = false;
 		WorkflowEngine engine = new WorkflowEngine(this);
 		workflowProbe.notifyWorkflowStarted(qosRequirement, params);
 		Object result = engine.executeWorkflow(workflow, qosRequirement, params);
@@ -177,7 +178,7 @@ public class CompositeService extends AbstractService {
 
     @Override
     public Object invokeOperation(String opName, Param[] params) {
-		// System.out.println(opName);
+		 System.out.println("Received operation name in composite service is :"+opName);
 		for (Method operation : this.getClass().getMethods()) {
 			if (operation.getAnnotation(ServiceOperation.class) != null) {
 				try {
@@ -194,7 +195,7 @@ public class CompositeService extends AbstractService {
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
-					System.out.println("The operation name or params are not valid. Please check and send again!");
+					System.out.println("(from composite) The operation name or params are not valid. Please check and send again!");
 				}
 			}
 		}
@@ -211,8 +212,7 @@ public class CompositeService extends AbstractService {
     @SuppressWarnings("unchecked")
 	public List<ServiceDescription> lookupService(String serviceType, String opName) {
     	//System.out.println("lookup service is called from composite service");
-		//List<ServiceDescription> 
-		serviceDescriptions = cache.get(serviceType,opName);
+		List<ServiceDescription> serviceDescriptions = cache.get(serviceType,opName);
 		if (serviceDescriptions == null || serviceDescriptions.size() == 0) {
 			serviceDescriptions = (List<ServiceDescription>) this.sendRequest(
 					ServiceRegistry.NAME, ServiceRegistry.ADDRESS, true,
@@ -308,6 +308,7 @@ public class CompositeService extends AbstractService {
 	    
 	    ServiceDescription service;
 	    // Apply strategy
+	    System.out.println("games plan status is :"+this.gamesPlan);
 	    if (this.gamesPlan == false) {
 	    	service = applyQoSRequirement(qosRequirement, services, opName, params);
 	    }
