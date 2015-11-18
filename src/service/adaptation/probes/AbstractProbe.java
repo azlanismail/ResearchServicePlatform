@@ -18,6 +18,7 @@ public class AbstractProbe<E> {
      * @param e subscriber object
      */
     public void register(E e){
+    	System.out.println("register a probe "+e+" from Abstract Probe");
     	subscribers.add(e);
     }
     

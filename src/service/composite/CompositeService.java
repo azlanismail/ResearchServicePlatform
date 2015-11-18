@@ -1,5 +1,6 @@
 package service.composite;
 
+import java.io.FileNotFoundException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -9,6 +10,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import adapt.plan.Planner;
 import service.adaptation.probes.CostProbe;
 import service.adaptation.probes.WorkflowProbe;
 import service.auxiliary.AbstractService;
@@ -41,9 +43,12 @@ public class CompositeService extends AbstractService {
     private AtomicBoolean stopRetrying = new AtomicBoolean(false);
     
     
-   // private List<ServiceDescription> serviceDescriptions;
-    //set the default status for games-based planning
+    //This is for games-based planner
+    private Planner plan;
+    
+    //set the default status for games-based planning and games-based adaptation planning
     private boolean gamesPlan = false;
+    private boolean gamesAdaptPlan = false;
     
     //to support games-based planning
     private ServiceDescription newService;
@@ -168,7 +173,7 @@ public class CompositeService extends AbstractService {
 		//SDCache sdCache = configuration.SDCacheShared == true ? cache : new SDCache() ;
 		//WorkflowEngine engine = new WorkflowEngine(this, sdCache);
     	//System.out.println("Invoking composite service....");
-    	this.gamesPlan = false;
+    	setGamesAdaptPlan(false);
 		WorkflowEngine engine = new WorkflowEngine(this);
 		workflowProbe.notifyWorkflowStarted(qosRequirement, params);
 		Object result = engine.executeWorkflow(workflow, qosRequirement, params);
@@ -306,16 +311,38 @@ public class CompositeService extends AbstractService {
 		return new TimeOutError();
 	    }
 	    
-	    ServiceDescription service;
+	    ServiceDescription service = null;
 	    // Apply strategy
-	    System.out.println("games plan status is :"+this.gamesPlan);
-	    if (this.gamesPlan == false) {
+	    System.out.println("games adaptation plan status is :"+this.gamesAdaptPlan);
+	    if ((this.gamesAdaptPlan == false) && (this.gamesPlan == false)) {
 	    	service = applyQoSRequirement(qosRequirement, services, opName, params);
 	    }
-	    else {
-	    	service = this.newService;
-	    	this.gamesPlan = false;
+	    else if ((this.gamesAdaptPlan == false) && (this.gamesPlan == true)) {
+	     		plan = new Planner();
+	    		//send serviceName/type to the model
+	    		plan.setServiceType(serviceName);
+	    		//send -1 that refers to the inital planning
+	    		plan.setConstantsProbe(-1);
+	    		//send -1 that refers to no failed service yet
+	    		plan.setConstantsFailedServiceId(-1);
+	    		plan.adaptPlan();
+	    		int sid = -1;
+		    	try {
+					sid = plan.getAdaptStrategyfromFile();
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		    	//assign the selected service
+		    	service = getServiceDescription(sid);
 	    }
+	    else if ((this.gamesAdaptPlan == true) && (this.gamesPlan == true)) {
+	    	//the result from the adaptation
+	    		service = this.newService;
+	    		this.gamesAdaptPlan = false;
+	    }
+	    else
+	    	System.out.println("no option");
 	    
 	    System.out.println("Operation " + service.getServiceType() + "." + opName + " has been selected (initially) with following custom properties:"
 		    + service.getCustomProperties());
@@ -370,6 +397,10 @@ public class CompositeService extends AbstractService {
      */
     public void stopRetrying(){
 	stopRetrying.set(true);
+    }
+    
+    public void setGamesAdaptPlan(boolean status){
+    	this.gamesAdaptPlan = status;
     }
     
     public void setGamesPlan(boolean status){

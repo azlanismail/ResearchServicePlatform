@@ -10,5 +10,6 @@
 	<classpathentry kind="lib" path="C:/Program Files (x86)/prism-games.beta.r5753/lib/epsgraphics.jar"/>
 	<classpathentry kind="lib" path="C:/Program Files (x86)/prism-games.beta.r5753/lib/jcommon.jar"/>
 	<classpathentry kind="lib" path="C:/Program Files (x86)/prism-games.beta.r5753/lib/jfreechart.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/PlanningComp"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
