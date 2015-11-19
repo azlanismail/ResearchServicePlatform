@@ -318,10 +318,22 @@ public class CompositeService extends AbstractService {
 	    	service = applyQoSRequirement(qosRequirement, services, opName, params);
 	    }
 	    else if ((this.gamesAdaptPlan == false) && (this.gamesPlan == true)) {
+	    		this.newService = null;
 	     		plan = new Planner();
+	     		
+	     		if (qosRequirement.equalsIgnoreCase("CostQoS")) {
+		    		plan.setConstantsGoalType(0);
+		    	}
+		    	else if (qosRequirement.equalsIgnoreCase("ReliabilityQoS")) {
+		    		plan.setConstantsGoalType(1);
+		    	}
+		    	else {
+		    		System.out.println("QoS type cannot be mapped to prism model");
+		    	}
+	     		
 	    		//send serviceName/type to the model
 	    		plan.setServiceType(serviceName);
-	    		//send -1 that refers to the inital planning
+	    		//send -1 that refers to the initial planning
 	    		plan.setConstantsProbe(-1);
 	    		//send -1 that refers to no failed service yet
 	    		plan.setConstantsFailedServiceId(-1);
