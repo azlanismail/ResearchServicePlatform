@@ -314,10 +314,10 @@ public class CompositeService extends AbstractService {
 	    ServiceDescription service = null;
 	    // Apply strategy
 	    System.out.println("games adaptation plan status is :"+this.gamesAdaptPlan);
-	    if ((this.gamesAdaptPlan == false) && (this.gamesPlan == false)) {
+	    if ((this.gamesAdaptPlan == false) && (this.gamesPlan == true)) {
 	    	service = applyQoSRequirement(qosRequirement, services, opName, params);
 	    }
-	    else if ((this.gamesAdaptPlan == false) && (this.gamesPlan == true)) {
+	    else if ((this.gamesAdaptPlan == false) && (this.gamesPlan == false)) {
 	    		this.newService = null;
 	     		plan = new Planner();
 	     		
@@ -347,11 +347,13 @@ public class CompositeService extends AbstractService {
 				}
 		    	//assign the selected service
 		    	service = getServiceDescription(sid);
+		    	System.out.println("End of synthesis from initial planning");
 	    }
 	    else if ((this.gamesAdaptPlan == true) && (this.gamesPlan == true)) {
 	    	//the result from the adaptation
 	    		service = this.newService;
 	    		this.gamesAdaptPlan = false;
+	    		System.out.println("End of Synthesis from adaptation planning");
 	    }
 	    else
 	    	System.out.println("no option");
