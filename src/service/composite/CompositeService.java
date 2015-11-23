@@ -313,50 +313,17 @@ public class CompositeService extends AbstractService {
 	    
 	    ServiceDescription service = null;
 	    // Apply strategy
-	    System.out.println("games adaptation plan status is :"+this.gamesAdaptPlan);
-	    if ((this.gamesAdaptPlan == false) && (this.gamesPlan == true)) {
+	    //System.out.println("games adaptation plan status is :"+this.gamesAdaptPlan);
+	   // if ((this.gamesAdaptPlan == false) && (this.gamesPlan == true)) {
 	    	service = applyQoSRequirement(qosRequirement, services, opName, params);
-	    }
-	    else if ((this.gamesAdaptPlan == false) && (this.gamesPlan == false)) {
-	    		this.newService = null;
-	     		plan = new Planner();
-	     		
-	     		if (qosRequirement.equalsIgnoreCase("CostQoS")) {
-		    		plan.setConstantsGoalType(0);
-		    	}
-		    	else if (qosRequirement.equalsIgnoreCase("ReliabilityQoS")) {
-		    		plan.setConstantsGoalType(1);
-		    	}
-		    	else {
-		    		System.out.println("QoS type cannot be mapped to prism model");
-		    	}
-	     		
-	    		//send serviceName/type to the model
-	    		plan.setServiceType(serviceName);
-	    		//send -1 that refers to the initial planning
-	    		plan.setConstantsProbe(-1);
-	    		//send -1 that refers to no failed service yet
-	    		plan.setConstantsFailedServiceId(-1);
-	    		plan.adaptPlan();
-	    		int sid = -1;
-		    	try {
-					sid = plan.getAdaptStrategyfromFile();
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-		    	//assign the selected service
-		    	service = getServiceDescription(sid);
-		    	System.out.println("End of synthesis from initial planning");
-	    }
-	    else if ((this.gamesAdaptPlan == true) && (this.gamesPlan == true)) {
+	   // }
+	   
+	    if (this.gamesAdaptPlan == true) {
 	    	//the result from the adaptation
 	    		service = this.newService;
 	    		this.gamesAdaptPlan = false;
-	    		System.out.println("End of Synthesis from adaptation planning");
+	    		System.out.println("End of synthesis from adaptation planning");
 	    }
-	    else
-	    	System.out.println("no option");
 	    
 	    System.out.println("Operation " + service.getServiceType() + "." + opName + " has been selected (initially) with following custom properties:"
 		    + service.getCustomProperties());
