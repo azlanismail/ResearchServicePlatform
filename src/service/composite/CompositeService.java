@@ -313,11 +313,8 @@ public class CompositeService extends AbstractService {
 	    
 	    ServiceDescription service = null;
 	    // Apply strategy
-	    //System.out.println("games adaptation plan status is :"+this.gamesAdaptPlan);
-	   // if ((this.gamesAdaptPlan == false) && (this.gamesPlan == true)) {
-	    	service = applyQoSRequirement(qosRequirement, services, opName, params);
-	   // }
-	   
+	   	service = applyQoSRequirement(qosRequirement, services, opName, params);
+	 	   
 	    if (this.gamesAdaptPlan == true) {
 	    	//the result from the adaptation
 	    		service = this.newService;
