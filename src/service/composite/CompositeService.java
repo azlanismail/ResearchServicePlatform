@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import adapt.plan.Planner;
 import service.adaptation.probes.CostProbe;
 import service.adaptation.probes.WorkflowProbe;
 import service.auxiliary.AbstractService;
@@ -41,11 +40,7 @@ public class CompositeService extends AbstractService {
     
     // This variable will effect only one thread/invocation of the workflow
     private AtomicBoolean stopRetrying = new AtomicBoolean(false);
-    
-    
-    //This is for games-based planner
-    private Planner plan;
-    
+       
     //set the default status for games-based planning and games-based adaptation planning
     private boolean gamesPlan = false;
     private boolean gamesAdaptPlan = false;
