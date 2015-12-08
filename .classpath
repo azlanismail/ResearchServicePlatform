@@ -5,11 +5,6 @@
 	<classpathentry kind="lib" path="libs/javax.jms-api-2.0.jar"/>
 	<classpathentry kind="lib" path="libs/xstream-1.5.0.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
-	<classpathentry kind="lib" path="C:/Program Files (x86)/prism-games.beta.r5753/lib/prism.jar"/>
-	<classpathentry kind="lib" path="C:/Program Files (x86)/prism-games.beta.r5753/lib/colt.jar"/>
-	<classpathentry kind="lib" path="C:/Program Files (x86)/prism-games.beta.r5753/lib/epsgraphics.jar"/>
-	<classpathentry kind="lib" path="C:/Program Files (x86)/prism-games.beta.r5753/lib/jcommon.jar"/>
-	<classpathentry kind="lib" path="C:/Program Files (x86)/prism-games.beta.r5753/lib/jfreechart.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/PlanningComp"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
