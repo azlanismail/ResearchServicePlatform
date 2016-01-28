@@ -307,6 +307,7 @@ public class CompositeService extends AbstractService {
 	    }
 	    
 	    ServiceDescription service = null;
+	    
 	    // Apply strategy
 	   	service = applyQoSRequirement(qosRequirement, services, opName, params);
 	 	   
@@ -315,7 +316,7 @@ public class CompositeService extends AbstractService {
 	    		service = this.newService;
 	    		this.gamesAdaptPlan = false;
 	    		System.out.println("End of synthesis from adaptation planning");
-	    }
+	    }	    	
 	    
 	    System.out.println("Operation " + service.getServiceType() + "." + opName + " has been selected (initially) with following custom properties:"
 		    + service.getCustomProperties());
